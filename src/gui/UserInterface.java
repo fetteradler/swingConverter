@@ -1,15 +1,21 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 
 import functionality.DegreeCelsius;
@@ -36,6 +42,11 @@ public class UserInterface extends JFrame implements ActionListener {
 	private JTextField entryValue;
 	private JTextField outValue1;
 	private JTextField outValue2;
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenu colorMenu;
+	private JRadioButtonMenuItem colorItem1;
+	private JRadioButtonMenuItem colorItem2;
 
 	/**
 	 * Constructor of the Interface. Creates the structure of the GUI.
@@ -57,6 +68,36 @@ public class UserInterface extends JFrame implements ActionListener {
 		panel = new JPanel();
 		panel.setBackground(color);
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 30));
+
+		menuBar = new JMenuBar();
+		menu = new JMenu("Ansicht");
+		colorMenu = new JMenu("Hintergrundfarbe anpassen");
+		ButtonGroup buttonGroup = new ButtonGroup();
+		colorItem1 = new JRadioButtonMenuItem("Grau", false);
+		colorMenu.add(colorItem1);
+		buttonGroup.add(colorItem1);
+		colorItem2 = new JRadioButtonMenuItem("Beige", true);
+		colorMenu.add(colorItem2);
+		buttonGroup.add(colorItem2);
+		menu.add(colorMenu);
+
+		colorItem1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+
+				panel.setBackground(Color.decode("#CDC5BF"));
+			}
+		});
+
+		colorItem2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+
+				panel.setBackground(Color.decode("#EED8AE"));
+			}
+		});
+
+		// menu.add(colorItem);
+		menuBar.add(menu);
+		panel.add(menuBar, BorderLayout.NORTH);
 
 		// Choose of the input unit
 		inUnit = new JLabel("Ausgehende Einheit ");
@@ -99,37 +140,67 @@ public class UserInterface extends JFrame implements ActionListener {
 
 			if (!entryValue.getText().equals("")) {
 
+				double kelvinValue = 0;
+				double celsiusValue = 0;
+				double fahrenheitValue = 0;
+
 				if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Kelvin")) {
 
 					Kelvin kelvin = new Kelvin();
-					double celsiusValue = kelvin.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
-					double fahrenheitValue = kelvin.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+					try {
+						kelvinValue = Double.parseDouble(this.entryValue.getText());
+						celsiusValue = kelvin.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = kelvin
+								.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
 
-					this.outUnit1.setText("Grad Celsius");
-					this.outValue1.setText(String.valueOf(celsiusValue));
-					this.outUnit2.setText("Grad Fahrenheit");
-					this.outValue2.setText(String.valueOf(fahrenheitValue));
+						this.outUnit1.setText("Grad Celsius");
+						this.outValue1.setText(String.valueOf(celsiusValue));
+						this.outUnit2.setText("Grad Fahrenheit");
+						this.outValue2.setText(String.valueOf(fahrenheitValue));
+					} catch (Exception ex) {
+
+					}
 				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Celsius")) {
 
 					DegreeCelsius celsius = new DegreeCelsius();
-					;
-					double kelvinValue = celsius.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
-					double fahrenheitValue = celsius.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+					try {
+						kelvinValue = celsius.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = celsius
+								.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
 
-					this.outUnit1.setText("Kelvin");
-					this.outValue1.setText(String.valueOf(kelvinValue));
-					this.outUnit2.setText("Grad Fahrenheit");
-					this.outValue2.setText(String.valueOf(fahrenheitValue));
+						this.outUnit1.setText("Kelvin");
+						this.outValue1.setText(String.valueOf(kelvinValue));
+						this.outUnit2.setText("Grad Fahrenheit");
+						this.outValue2.setText(String.valueOf(fahrenheitValue));
+					} catch (Exception ex) {
+
+					}
 				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Fahrenheit")) {
 
 					DegreeFahrenheit fahrenheit = new DegreeFahrenheit();
-					double kelvinValue = fahrenheit.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
-					double celsiusValue = fahrenheit.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
+					try {
+						kelvinValue = fahrenheit.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
+						celsiusValue = fahrenheit
+								.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
 
-					this.outUnit1.setText("Kelvin");
-					this.outValue1.setText(String.valueOf(kelvinValue));
-					this.outUnit2.setText("Grad Celsius");
-					this.outValue2.setText(String.valueOf(celsiusValue));
+						this.outUnit1.setText("Kelvin");
+						this.outValue1.setText(String.valueOf(kelvinValue));
+						this.outUnit2.setText("Grad Celsius");
+						this.outValue2.setText(String.valueOf(celsiusValue));
+					} catch (Exception ex) {
+
+					}
+				}
+				
+				if (Kelvin.checkAbsoluteZero(kelvinValue) == false) {
+					System.out.println("Kommt rein");
+					JDialog zeroWarning = new JDialog();
+					zeroWarning.setTitle("Absoluter Nullpunkt");
+					zeroWarning.setSize(200, 200);
+					zeroWarning.setModal(true);
+					zeroWarning.add(new JLabel(
+							"<html><body>Ihr eingegebener Wert überschreitet den absoluten Nullpunkt der Erde.<br>Bitte beachten Sie dies bei Ihren weiterem Vorhaben.</body></html>"));
+					zeroWarning.setVisible(true);
 				}
 			}
 		}

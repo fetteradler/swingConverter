@@ -47,4 +47,24 @@ public class Kelvin {
 
 		return roundResult;
 	}
+
+	/**
+	 * Checks if the entered value is not lower than the absolute zero.
+	 * 
+	 * @param value
+	 *            Entered value of Kelvin to check if the absolute zero is
+	 *            beyond.
+	 * @return True if value is >= 0, false if not.
+	 */
+	public static boolean checkAbsoluteZero(double value) {
+
+		System.out.println("absolute Zero " + value);
+		if (value >= 0) {
+			System.out.println("absolute Zero 2");
+			return true;
+		} else {
+			System.out.println("absolute Zero 3");
+			return false;
+		}
+	}
 }
