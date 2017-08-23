@@ -58,12 +58,9 @@ public class Kelvin {
 	 */
 	public static boolean checkAbsoluteZero(double value) {
 
-		System.out.println("absolute Zero " + value);
 		if (value >= 0) {
-			System.out.println("absolute Zero 2");
 			return true;
 		} else {
-			System.out.println("absolute Zero 3");
 			return false;
 		}
 	}

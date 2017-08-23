@@ -1,8 +1,6 @@
 package starter;
 
-import java.awt.Color;
-
-import gui.UserInterface;
+import gui.LayoutInterface;
 
 /**
  * Main of the program. Start the application.
@@ -19,10 +17,17 @@ public class Run {
 	 */
 	public static void main(String[] args) {
 
-		// UserInterface ui = new UserInterface("Converter", 350, 400,
-		// Color.lightGray);
-
-		UserInterface ui = new UserInterface("Converter", 350, 400, Color.decode("#FFDEAD"));
-		ui.setVisible(true);
+//		UserInterface ui = new UserInterface("Converter", 350, 400, Color.decode("#FFDEAD"));
+//		ui.setVisible(true);
+		
+//		SwingUtilities.invokeLater(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				LayoutInterface.layout();
+//			}
+//		});
+		
+		LayoutInterface ial = new LayoutInterface();
 	}
 }

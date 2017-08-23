@@ -2,7 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -67,13 +69,29 @@ public class UserInterface extends JFrame implements ActionListener {
 
 		panel = new JPanel();
 		panel.setBackground(color);
-		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 30));
+		
+		//Create GridBagLayout
+		GridBagLayout gbl = new GridBagLayout();
+		getContentPane().setLayout(gbl);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridheight = 1;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		
+		gbc.insets = new Insets(0,0,5,0);
 
 		menuBar = new JMenuBar();
+		
+		gbl.setConstraints(menuBar, gbc);
+		//getContentPane().add(menuBar);
+		
 		menu = new JMenu("Ansicht");
 		colorMenu = new JMenu("Hintergrundfarbe anpassen");
 		ButtonGroup buttonGroup = new ButtonGroup();
-		colorItem1 = new JRadioButtonMenuItem("Grau", false);
+		colorItem1 = new JRadioButtonMenuItem("Grün", false);
 		colorMenu.add(colorItem1);
 		buttonGroup.add(colorItem1);
 		colorItem2 = new JRadioButtonMenuItem("Beige", true);
@@ -84,7 +102,7 @@ public class UserInterface extends JFrame implements ActionListener {
 		colorItem1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 
-				panel.setBackground(Color.decode("#CDC5BF"));
+				panel.setBackground(Color.decode("#B4EEB4"));
 			}
 		});
 
@@ -100,29 +118,106 @@ public class UserInterface extends JFrame implements ActionListener {
 		panel.add(menuBar, BorderLayout.NORTH);
 
 		// Choose of the input unit
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(0,0,0,0);
 		inUnit = new JLabel("Ausgehende Einheit ");
+		
+		gbl.setConstraints(inUnit, gbc);
+		//getContentPane().add(inUnit);
 		panel.add(inUnit);
+		
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 3;
+		gbc.insets = new Insets( 0, 5, 0, 5);
 		String comboBoxList[] = { "Kelvin", "Grad Celsius", "Grad Fahrenheit" };
 		chooseInUnit = new JComboBox<>(comboBoxList);
+		gbl.setConstraints(chooseInUnit, gbc);
+		//getContentPane().add(chooseInUnit);
 		panel.add(chooseInUnit);
 
 		// Entry of the converting value
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.weightx = 1;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		
 		value = new JLabel("Wert ");
+		
+		gbl.setConstraints(value, gbc);
+		//getContentPane().add(value);
 		panel.add(value);
+		
+
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 3;
+		gbc.insets = new Insets( 0, 5, 0, 5);
 		entryValue = new JTextField(14);
+		
+		gbl.setConstraints(entryValue, gbc);
+		//getContentPane().add(entryValue);
 		panel.add(entryValue);
+		
+		//gbc.gridwidth = 1;
+		//gbc.weightx = 1;
+		//gbc.weighty = 1;
+
+		gbc.anchor = GridBagConstraints.BASELINE;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 3;
+		gbc.insets = new Insets(0,5,0,5);
+		
+		gbc.fill = GridBagConstraints.NONE;
 		confirmButton = new JButton("Okay");
+
+		gbl.setConstraints(confirmButton, gbc);
+		//getContentPane().add(confirmButton);
 		panel.add(confirmButton);
+		
 		confirmButton.addActionListener(this);
 
 		// Output of the converting value
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.fill = GridBagConstraints.NONE;
+		
 		outUnit1 = new JLabel("");
+		
+		gbl.setConstraints(outUnit1, gbc);
+		//getContentPane().add(outUnit1);
 		panel.add(outUnit1);
+		
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 3;
+		gbc.insets = new Insets( 0, 5, 0, 5);
 		outValue1 = new JTextField("konvertierer Wert 1", 14);
+		gbl.setConstraints(outValue1, gbc);
+		//getContentPane().add(outValue1);
 		panel.add(outValue1);
+		
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.fill = GridBagConstraints.NONE;
 		outUnit2 = new JLabel("");
+		
+		gbl.setConstraints(outUnit2, gbc);
+		//getContentPane().add(outUnit2);
 		panel.add(outUnit2);
+		
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 3;
+		gbc.insets = new Insets( 0, 5, 0, 5);
 		outValue2 = new JTextField("konvertierer Wert 2", 14);
+		gbl.setConstraints(outValue2, gbc);
+		//getContentPane().add(outValue2);
 		panel.add(outValue2);
 
 		this.add(panel);
@@ -193,7 +288,6 @@ public class UserInterface extends JFrame implements ActionListener {
 				}
 				
 				if (Kelvin.checkAbsoluteZero(kelvinValue) == false) {
-					System.out.println("Kommt rein");
 					JDialog zeroWarning = new JDialog();
 					zeroWarning.setTitle("Absoluter Nullpunkt");
 					zeroWarning.setSize(200, 200);
