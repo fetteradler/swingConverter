@@ -1,17 +1,12 @@
 package functionality;
 
-/**
- * Functions for an value in degree Fahrenheit. 
- * @author CM
- *
- */
-public class DegreeFahrenheit {
+public class DegreeRéaumur {
 
 	/**
-	 * Convert a value in degree Fahrenheit to the equal value in degree Celsius.
+	 * Convert a value in degree Réaumur to the equal value in degree Celsius.
 	 * 
 	 * @param value
-	 *            Value in degree Fahrenheit that wants to be converted. Rounded up
+	 *            Value in degree Réaumur that wants to be converted. Rounded up
 	 *            to 2 decimal places.
 	 * @return converted degree Celsius value
 	 */
@@ -19,19 +14,19 @@ public class DegreeFahrenheit {
 
 		double result;
 
-		result = (value - 32) / 1.8;
+		result = value / 0.8;
 		
 		//round up result to 2 decimal places
 		double roundResult = Math.round(result * 100.0) / 100.0;
 
 		return roundResult;
 	}
-
+	
 	/**
-	 * Convert a value in degree Fahrenheit to the equal value in Kelvin.
+	 * Convert a value in degree Réaumur to the equal value in Kelvin.
 	 * 
 	 * @param value
-	 *            Value in degree Fahrenheit that wants to be converted. Rounded up
+	 *            Value in degree Réaumur that wants to be converted. Rounded up
 	 *            to 2 decimal places.
 	 * @return converted Kelvin value
 	 */
@@ -39,7 +34,7 @@ public class DegreeFahrenheit {
 
 		double result;
 
-		result = (value + 459.67) / 1.8;
+		result = (value * 1.25) + 273.15;
 		
 		//round up result to 2 decimal places
 		double roundResult = Math.round(result * 100.0) / 100.0;
@@ -48,31 +43,32 @@ public class DegreeFahrenheit {
 	}
 	
 	/**
-	 * Convert a value in degree Fahrenheit to the equal value in degree
-	 * Réaumur.
+	 * Convert a value in degree Réaumur to the equal value in degree
+	 * Fahrenheit.
 	 * 
 	 * @param value
-	 *            Value in degree Fahrenheit that wants to be converted. Rounded up
+	 *            Value in degree Réaumur that wants to be converted. Rounded up
 	 *            to 2 decimal places.
-	 * @return converted degree Réaumur value
+	 * @return converted degree Fahrenheit value
 	 */
-	public double convertToRéaumur(double value) {
-		
+	public double convertToFahrenheit(double value) {
+
 		double result;
-		
-		result = (value - 32) / 2.25;
-		
+
+		result = 2.25 * value + 32;
+
+		// round up result to 2 decimal places
 		double roundResult = Math.round(result * 100.0) / 100.0;
 
 		return roundResult;
 	}
 	
 	/**
-	 * Convert a value in degree Fahrenheit to the equal value in degree
+	 * Convert a value in degree Réaumur to the equal value in degree
 	 * Rankine.
 	 * 
 	 * @param value
-	 *            Value in degree Fahrenheit that wants to be converted. Rounded up
+	 *            Value in degree Réaumur that wants to be converted. Rounded up
 	 *            to 2 decimal places.
 	 * @return converted degree Rankine value
 	 */
@@ -80,7 +76,7 @@ public class DegreeFahrenheit {
 		
 		double result;
 		
-		result = value + 459.67;
+		result = value * 2.25 + 491.67;
 		
 		double roundResult = Math.round(result * 100.0) / 100.0;
 

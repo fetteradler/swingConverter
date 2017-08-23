@@ -1,6 +1,6 @@
 package starter;
 
-import gui.LayoutInterface;
+import gui.UserInterface;
 
 /**
  * Main of the program. Start the application.
@@ -16,18 +16,7 @@ public class Run {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-//		UserInterface ui = new UserInterface("Converter", 350, 400, Color.decode("#FFDEAD"));
-//		ui.setVisible(true);
 		
-//		SwingUtilities.invokeLater(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				LayoutInterface.layout();
-//			}
-//		});
-		
-		LayoutInterface ial = new LayoutInterface();
+		new UserInterface();
 	}
 }

@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -22,6 +24,8 @@ import javax.swing.JTextField;
 
 import functionality.DegreeCelsius;
 import functionality.DegreeFahrenheit;
+import functionality.DegreeRankine;
+import functionality.DegreeRéaumur;
 import functionality.Kelvin;
 
 /**
@@ -34,70 +38,195 @@ import functionality.Kelvin;
 @SuppressWarnings("serial")
 public class UserInterface extends JFrame implements ActionListener {
 
+	private JFrame frame;
 	private JPanel panel;
-	private JLabel inUnit;
-	private JLabel value;
+	private JLabel inUnit, value, outUnit1, outUnit2, outUnit3, outUnit4;
 	private JComboBox<String> chooseInUnit;
-	private JButton confirmButton;
-	private JLabel outUnit1;
-	private JLabel outUnit2;
-	private JTextField entryValue;
-	private JTextField outValue1;
-	private JTextField outValue2;
+	private JButton confirmButton, infoButton;
+	private JTextField entryValue, outValue1, outValue2, outValue3, outValue4;
 	private JMenuBar menuBar;
-	private JMenu menu;
-	private JMenu colorMenu;
-	private JRadioButtonMenuItem colorItem1;
-	private JRadioButtonMenuItem colorItem2;
+	private JMenu navigateMenu, colorMenu, settingsMenu;
+	private JCheckBox advancedSettings;
+	private JRadioButtonMenuItem colorItem1, colorItem2; // advancedSettings;
+	private ButtonGroup buttonGroup;
+	private GridBagConstraints gbc = new GridBagConstraints();
 
 	/**
-	 * Constructor of the Interface. Creates the structure of the GUI.
-	 * 
-	 * @param title
-	 *            Title of the JFrame.
-	 * @param size1
-	 *            Horizontal size of the JFrame.
-	 * @param size2
-	 *            Vertical size of the JFrame.
-	 * @param color
-	 *            Background color of the JPanel.
+	 * Constructor of the interface. Create new object of UserInterface.
 	 */
-	public UserInterface(String title, int size1, int size2, Color color) {
+	public UserInterface() {
 
-		this.setTitle(title);
-		this.setSize(size1, size2);
+		frame = new JFrame("Converter");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 950);
+
+		this.createMenu();
+		frame.setJMenuBar(menuBar);
+		frame.add(createPanel(), BorderLayout.CENTER);
+
+		frame.pack();
+		frame.setVisible(true);
+
+	}
+
+	/**
+	 * Create the JPanel of the interface. At this interface the whole GridBackLayout is defined. 
+	 * @return Panel of the interface.
+	 */
+	public JPanel createPanel() {
 
 		panel = new JPanel();
-		panel.setBackground(color);
-		
-		//Create GridBagLayout
-		GridBagLayout gbl = new GridBagLayout();
-		getContentPane().setLayout(gbl);
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.gridheight = 1;
+		panel.setBackground(Color.decode("#FFDEAD"));
+		inUnit = new JLabel("Ausgehende Einheit");
+		panel.setLayout(new GridBagLayout());
+		String comboBoxList[] = { "Kelvin K", "Grad Celsius °C", "Grad Fahrenheit °F" };
+		chooseInUnit = new JComboBox<>(comboBoxList);
+		value = new JLabel("Wert ");
+		entryValue = new JTextField(14);
+		confirmButton = new JButton("Okay");
+		outUnit1 = new JLabel("");
+		outValue1 = new JTextField("Ausgabe 1", 14);
+		outUnit2 = new JLabel("");
+		outValue2 = new JTextField("Ausgabe 2", 14);
+		infoButton = new JButton("<html><body>&#9432</bod></html>");
+
+		int i = 0;
+		// JComboBox
+		gbc.gridx = 1;
+		gbc.gridy = i;
+		gbc.gridwidth = 2;
+		gbc.insets = new Insets(15, 15, 15, 15);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(chooseInUnit, gbc);
+
+		// JLabel
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(15, 15, 15, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(inUnit, gbc);
+
+		i++;
+
+		// JTextField
+		gbc.gridx = 1;
+		gbc.gridy = i;
+		gbc.gridwidth = 2;
+		gbc.insets = new Insets(5, 15, 5, 15);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(entryValue, gbc);
+
+		// JLabel
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(5, 15, 5, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(value, gbc);
+
+		i++;
+
+		// JButton
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		
-		gbc.insets = new Insets(0,0,5,0);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridy = i;
+		gbc.insets = new Insets(25, 25, 45, 25);
+		panel.add(confirmButton, gbc);
+		confirmButton.addActionListener(this);
+
+		i++;
+
+		// JTextField
+		gbc.gridx = 1;
+		gbc.gridy = i;
+		gbc.gridwidth = 2;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(outValue1, gbc);
+
+		// JLabel
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(outUnit1, gbc);
+
+		i++;
+
+		// JTextField
+		gbc.gridx = 1;
+		gbc.gridy = i;
+		gbc.gridwidth = 2;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(outValue2, gbc);
+
+		// JLabel
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(outUnit2, gbc);
+
+		i++;
+
+		outUnit3 = new JLabel("");
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(outUnit3, gbc);
+
+		i++;
+		outUnit4 = new JLabel("");
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.gridwidth = 1;
+		gbc.insets = new Insets(15, 15, 35, 15);
+		gbc.fill = GridBagConstraints.NONE;
+		panel.add(outUnit4, gbc);
+
+		i++;
+		i++;
+
+		// JButton
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.LAST_LINE_START;
+		gbc.gridy = i;
+		gbc.insets = new Insets(25, 25, 45, 25);
+		panel.add(infoButton, gbc);
+		infoButton.addActionListener(this);
+
+		i++;
+
+		return panel;
+	}
+
+	/**
+	 * Create the menubar of the application. The user can take different settings. 
+	 */
+	public void createMenu() {
 
 		menuBar = new JMenuBar();
-		
-		gbl.setConstraints(menuBar, gbc);
-		//getContentPane().add(menuBar);
-		
-		menu = new JMenu("Ansicht");
+		frame.setJMenuBar(menuBar);
+
+		navigateMenu = new JMenu("Ansicht");
 		colorMenu = new JMenu("Hintergrundfarbe anpassen");
-		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup = new ButtonGroup();
+
 		colorItem1 = new JRadioButtonMenuItem("Grün", false);
 		colorMenu.add(colorItem1);
 		buttonGroup.add(colorItem1);
+
 		colorItem2 = new JRadioButtonMenuItem("Beige", true);
 		colorMenu.add(colorItem2);
 		buttonGroup.add(colorItem2);
-		menu.add(colorMenu);
+
+		navigateMenu.add(colorMenu);
 
 		colorItem1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -109,128 +238,85 @@ public class UserInterface extends JFrame implements ActionListener {
 		colorItem2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 
-				panel.setBackground(Color.decode("#EED8AE"));
+				panel.setBackground(Color.decode("#FFDEAD"));
 			}
 		});
 
-		// menu.add(colorItem);
-		menuBar.add(menu);
-		panel.add(menuBar, BorderLayout.NORTH);
+		settingsMenu = new JMenu("Einstellungen");
+		advancedSettings = new JCheckBox("Erweiterte Funktionen");
+		settingsMenu.add(advancedSettings);
 
-		// Choose of the input unit
-		gbc.gridwidth = 1;
-		gbc.insets = new Insets(0,0,0,0);
-		inUnit = new JLabel("Ausgehende Einheit ");
-		
-		gbl.setConstraints(inUnit, gbc);
-		//getContentPane().add(inUnit);
-		panel.add(inUnit);
-		
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 3;
-		gbc.insets = new Insets( 0, 5, 0, 5);
-		String comboBoxList[] = { "Kelvin", "Grad Celsius", "Grad Fahrenheit" };
-		chooseInUnit = new JComboBox<>(comboBoxList);
-		gbl.setConstraints(chooseInUnit, gbc);
-		//getContentPane().add(chooseInUnit);
-		panel.add(chooseInUnit);
+		advancedSettings.addActionListener(new java.awt.event.ActionListener() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public void actionPerformed(java.awt.event.ActionEvent e) {
 
-		// Entry of the converting value
-		gbc.gridwidth = 1;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.weightx = 1;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		
-		value = new JLabel("Wert ");
-		
-		gbl.setConstraints(value, gbc);
-		//getContentPane().add(value);
-		panel.add(value);
-		
+				if (advancedSettings.isSelected()) {
+					String comboBoxList[] = { "Kelvin K", "Grad Celsius °C", "Grad Fahrenheit °F", "Grad Réaumur °Ré",
+							"Grad Rankine °R" };
+					chooseInUnit.setModel(new DefaultComboBoxModel(comboBoxList));
 
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 3;
-		gbc.insets = new Insets( 0, 5, 0, 5);
-		entryValue = new JTextField(14);
-		
-		gbl.setConstraints(entryValue, gbc);
-		//getContentPane().add(entryValue);
-		panel.add(entryValue);
-		
-		//gbc.gridwidth = 1;
-		//gbc.weightx = 1;
-		//gbc.weighty = 1;
+					outValue3 = new JTextField("Ausgabe 3", 14);
+					outUnit3 = new JLabel("");
+					outValue4 = new JTextField("Ausgabe 4", 14);
+					outUnit4 = new JLabel("");
 
-		gbc.anchor = GridBagConstraints.BASELINE;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 3;
-		gbc.insets = new Insets(0,5,0,5);
-		
-		gbc.fill = GridBagConstraints.NONE;
-		confirmButton = new JButton("Okay");
+					// JTextField
+					gbc.gridx = 1;
+					gbc.gridy = 5;
+					gbc.gridwidth = 2;
+					gbc.insets = new Insets(15, 15, 35, 15);
+					gbc.fill = GridBagConstraints.HORIZONTAL;
+					panel.add(outValue3, gbc);
 
-		gbl.setConstraints(confirmButton, gbc);
-		//getContentPane().add(confirmButton);
-		panel.add(confirmButton);
-		
-		confirmButton.addActionListener(this);
+					// JLabel
+					gbc.gridx = 0;
+					gbc.gridy = 5;
+					gbc.gridwidth = 1;
+					gbc.insets = new Insets(15, 15, 35, 15);
+					gbc.fill = GridBagConstraints.NONE;
+					panel.add(outUnit3, gbc);
 
-		// Output of the converting value
-		gbc.gridwidth = 1;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.fill = GridBagConstraints.NONE;
-		
-		outUnit1 = new JLabel("");
-		
-		gbl.setConstraints(outUnit1, gbc);
-		//getContentPane().add(outUnit1);
-		panel.add(outUnit1);
-		
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 3;
-		gbc.insets = new Insets( 0, 5, 0, 5);
-		outValue1 = new JTextField("konvertierer Wert 1", 14);
-		gbl.setConstraints(outValue1, gbc);
-		//getContentPane().add(outValue1);
-		panel.add(outValue1);
-		
-		gbc.gridwidth = 1;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.fill = GridBagConstraints.NONE;
-		outUnit2 = new JLabel("");
-		
-		gbl.setConstraints(outUnit2, gbc);
-		//getContentPane().add(outUnit2);
-		panel.add(outUnit2);
-		
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 3;
-		gbc.insets = new Insets( 0, 5, 0, 5);
-		outValue2 = new JTextField("konvertierer Wert 2", 14);
-		gbl.setConstraints(outValue2, gbc);
-		//getContentPane().add(outValue2);
-		panel.add(outValue2);
+					// JTextField
+					gbc.gridx = 1;
+					gbc.gridy = 6;
+					gbc.gridwidth = 2;
+					gbc.insets = new Insets(15, 15, 35, 15);
+					gbc.fill = GridBagConstraints.HORIZONTAL;
+					panel.add(outValue4, gbc);
 
-		this.add(panel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					// JLabel
+					gbc.gridx = 0;
+					gbc.gridy = 6;
+					gbc.gridwidth = 1;
+					gbc.insets = new Insets(15, 15, 35, 15);
+					gbc.fill = GridBagConstraints.NONE;
+					panel.add(outUnit4, gbc);
+				}
+				if (!advancedSettings.isSelected()) {
+					String comboBoxList[] = { "Kelvin K", "Grad Celsius °C", "Grad Fahrenheit °F" };
+					chooseInUnit.setModel(new DefaultComboBoxModel(comboBoxList));
+					outValue3.setVisible(false);
+					outUnit3.setVisible(false);
+					outValue4.setVisible(false);
+					outUnit4.setVisible(false);
+				}
+			}
+		});
 
+		menuBar.add(settingsMenu);
+		menuBar.add(navigateMenu);
 	}
 
 	/**
-	 * Functionality by using the interface.
+	 * Functionality by using the interface. User can convert the entry in
+	 * different units. Also the user can open an info window with different
+	 * informations about the units. If the entry of the user is lower than 0K,
+	 * an dialog window will open and brief the user about this.
 	 */
-	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// If the button is pushed, the user converts the entry in different
+		// equal units.
 		if (e.getSource() == this.confirmButton) {
 
 			if (!entryValue.getText().equals("")) {
@@ -238,65 +324,165 @@ public class UserInterface extends JFrame implements ActionListener {
 				double kelvinValue = 0;
 				double celsiusValue = 0;
 				double fahrenheitValue = 0;
+				double reaumurValue = 0;
+				double rankinValue = 0;
 
-				if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Kelvin")) {
+				if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Kelvin K")) {
 
 					Kelvin kelvin = new Kelvin();
 					try {
 						kelvinValue = Double.parseDouble(this.entryValue.getText());
 						celsiusValue = kelvin.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
-						fahrenheitValue = kelvin
-								.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = kelvin.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
 
-						this.outUnit1.setText("Grad Celsius");
+						this.outUnit1.setText("Grad Celsius °C");
 						this.outValue1.setText(String.valueOf(celsiusValue));
-						this.outUnit2.setText("Grad Fahrenheit");
+						this.outUnit2.setText("Grad Fahrenheit °F");
 						this.outValue2.setText(String.valueOf(fahrenheitValue));
+
+						if (advancedSettings.isSelected()) {
+							reaumurValue = kelvin.convertToRéaumur(Double.parseDouble(this.entryValue.getText()));
+							rankinValue = kelvin.convertToRankine(Double.parseDouble(this.entryValue.getText()));
+							this.outUnit3.setText("Grad Réaumur °Ré");
+							this.outValue3.setText(String.valueOf(reaumurValue));
+							this.outUnit4.setText("Grad Rankine °R");
+							this.outValue4.setText(String.valueOf(rankinValue));
+						}
 					} catch (Exception ex) {
 
 					}
-				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Celsius")) {
+				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Celsius °C")) {
 
 					DegreeCelsius celsius = new DegreeCelsius();
 					try {
 						kelvinValue = celsius.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
-						fahrenheitValue = celsius
-								.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = celsius.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
 
-						this.outUnit1.setText("Kelvin");
+						this.outUnit1.setText("Kelvin K");
 						this.outValue1.setText(String.valueOf(kelvinValue));
-						this.outUnit2.setText("Grad Fahrenheit");
+						this.outUnit2.setText("Grad Fahrenheit °F");
 						this.outValue2.setText(String.valueOf(fahrenheitValue));
+						if (advancedSettings.isSelected()) {
+							reaumurValue = celsius.convertToRéaumur(Double.parseDouble(this.entryValue.getText()));
+							rankinValue = celsius.convertToRankine(Double.parseDouble(this.entryValue.getText()));
+							this.outUnit3.setText("Grad Réaumur °Ré");
+							this.outValue3.setText(String.valueOf(reaumurValue));
+							this.outUnit4.setText("Grad Rankine °R");
+							this.outValue4.setText(String.valueOf(rankinValue));
+						}
 					} catch (Exception ex) {
 
 					}
-				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Fahrenheit")) {
+				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Fahrenheit °F")) {
 
 					DegreeFahrenheit fahrenheit = new DegreeFahrenheit();
 					try {
 						kelvinValue = fahrenheit.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
-						celsiusValue = fahrenheit
-								.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
+						celsiusValue = fahrenheit.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
 
-						this.outUnit1.setText("Kelvin");
+						this.outUnit1.setText("Kelvin K");
 						this.outValue1.setText(String.valueOf(kelvinValue));
-						this.outUnit2.setText("Grad Celsius");
+						this.outUnit2.setText("Grad Celsius °C");
 						this.outValue2.setText(String.valueOf(celsiusValue));
+						if (advancedSettings.isSelected()) {
+							reaumurValue = fahrenheit.convertToRéaumur(Double.parseDouble(this.entryValue.getText()));
+							rankinValue = fahrenheit.convertToRankine(Double.parseDouble(this.entryValue.getText()));
+							this.outUnit3.setText("Grad Réaumur °Ré");
+							this.outValue3.setText(String.valueOf(reaumurValue));
+							this.outUnit4.setText("Grad Rankine °R");
+							this.outValue4.setText(String.valueOf(rankinValue));
+						}
+					} catch (Exception ex) {
+
+					}
+				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Réaumur °Ré")) {
+
+					DegreeRéaumur reaumur = new DegreeRéaumur();
+					try {
+						kelvinValue = reaumur.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
+						celsiusValue = reaumur.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = reaumur.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+						rankinValue = reaumur.convertToRankine(Double.parseDouble(this.entryValue.getText()));
+
+						this.outUnit1.setText("Kelvin K");
+						this.outValue1.setText(String.valueOf(kelvinValue));
+						this.outUnit2.setText("Grad Celsius °C");
+						this.outValue2.setText(String.valueOf(celsiusValue));
+						this.outUnit3.setText("Grad Fahrenheit °F");
+						this.outValue3.setText(String.valueOf(fahrenheitValue));
+						this.outUnit4.setText("Grad Rankine °R");
+						this.outValue4.setText(String.valueOf(rankinValue));
+					} catch (Exception ex) {
+
+					}
+				} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Rankine °R")) {
+
+					DegreeRankine rankine = new DegreeRankine();
+					try {
+						kelvinValue = rankine.convertToKelvin(Double.parseDouble(this.entryValue.getText()));
+						celsiusValue = rankine.convertToCelsius(Double.parseDouble(this.entryValue.getText()));
+						fahrenheitValue = rankine.convertToFahrenheit(Double.parseDouble(this.entryValue.getText()));
+						reaumurValue = rankine.convertToRéaumur(Double.parseDouble(this.entryValue.getText()));
+
+						this.outUnit1.setText("Kelvin K");
+						this.outValue1.setText(String.valueOf(kelvinValue));
+						this.outUnit2.setText("Grad Celsius °C");
+						this.outValue2.setText(String.valueOf(celsiusValue));
+						this.outUnit3.setText("Grad Fahrenheit °F");
+						this.outValue3.setText(String.valueOf(fahrenheitValue));
+						this.outUnit4.setText("Grad Réaumur °Ré");
+						this.outValue4.setText(String.valueOf(reaumurValue));
 					} catch (Exception ex) {
 
 					}
 				}
-				
+
+				// If the value is lower than 0K, the user getts an information.
 				if (Kelvin.checkAbsoluteZero(kelvinValue) == false) {
 					JDialog zeroWarning = new JDialog();
 					zeroWarning.setTitle("Absoluter Nullpunkt");
 					zeroWarning.setSize(200, 200);
 					zeroWarning.setModal(true);
 					zeroWarning.add(new JLabel(
-							"<html><body>Ihr eingegebener Wert überschreitet den absoluten Nullpunkt der Erde.<br>Bitte beachten Sie dies bei Ihren weiterem Vorhaben.</body></html>"));
+							"<html><body>Ihr eingegebener Wert überschreitet den absoluten Nullpunkt der Erde.<br>Dieser liegt bei 0K.<br>Bitte beachten Sie dies bei Ihren weiterem Vorhaben.</body></html>"));
 					zeroWarning.setVisible(true);
 				}
 			}
 		}
+
+		// If the button is pushed user get an information about the selected
+		// unit.
+		if (e.getSource() == this.infoButton) {
+
+			JDialog infoDialog = new JDialog();
+			infoDialog.setTitle("Info");
+			infoDialog.setSize(300, 300);
+			infoDialog.setModal(true);
+
+			if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Rankine °R")) {
+
+				infoDialog.add(new JLabel(
+						"<html><body>Die Rankine-Skala ist eine Temperaturskala, die wie die Kelvin-Skala beim absoluten Temperaturnullpunkt ihren Nullwert hat, jedoch im Gegensatz zu dieser den Skalenabstand der Fahrenheit-Skala verwendet. Sie ist nach dem schottischen Ingenieur und Physiker William John Macquorn Rankine benannt, der sie im Jahre 1859 vorschlug (siehe auch die Rankine-Hugoniot-Gleichung). Sie wurde vor allem in anglophonen Ländern benutzt.<br><br><i>Quelle: Wikipedia</i></body></html>"));
+
+			} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Fahrenheit °F")) {
+
+				infoDialog.add(new JLabel(
+						"<html><body>Grad Fahrenheit ist eine Maßeinheit der Temperatur. Sie wurde nach Daniel Gabriel Fahrenheit benannt.<br><br><i>Quelle: Wikipedia</i></body></html>"));
+			} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Réaumur °Ré")) {
+
+				infoDialog.add(new JLabel(
+						"<html><body>Die Réaumur-Skala in Grad Réaumur (Einheitenzeichen: °Ré, °Re, °Réaumur, eingeschränkt auch °R) als Einheit zur Messung der Temperatur wurde 1730 vom französischen Naturforscher René-Antoine Ferchault de Réaumur eingeführt. Grad Réaumur ist keine SI-Einheit.<br>Bezugspunkte der Réaumur-Skala sind der Schmelzpunkt von Eis (0 °Ré) und der Siedepunkt von Wasser (80 °Ré) bei Normaldruck (1013,25 hPa). Réaumur nahm eine Einteilung zwischen diesen beiden Eckwerten in 80 gleiche Gradabstufungen vor.<br><br><i>Quelle: Wikipedia</i></body></html>"));
+			} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Grad Celsius °C")) {
+
+				infoDialog.add(new JLabel(
+						"<html><body>Das Grad Celsius ist eine Maßeinheit der Temperatur, welche nach Anders Celsius benannt wurde.<br><br><i>Quelle: Wikipedia</i></body></html>"));
+			} else if (String.valueOf(this.chooseInUnit.getSelectedItem()).equals("Kelvin K")) {
+
+				infoDialog.add(new JLabel(
+						"<html><body>Das Kelvin (Einheitenzeichen: K) ist die SI-Basiseinheit der thermodynamischen Temperatur und zugleich gesetzliche Temperatureinheit. In vielen europäischen Ländern gilt daneben auch das Grad Celsius (Einheitenzeichen: °C) als gesetzliche Einheit für die Angabe von Celsius-Temperaturen und deren Differenzen. <br><br> <i>Quelle: Wikipedia</i> </body></html>"));
+			}
+			infoDialog.setVisible(true);
+		}
 	}
+
 }

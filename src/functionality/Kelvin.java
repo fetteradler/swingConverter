@@ -47,6 +47,46 @@ public class Kelvin {
 
 		return roundResult;
 	}
+	
+	/**
+	 * Convert a value in Kelvin to the equal value in degree
+	 * Réaumur.
+	 * 
+	 * @param value
+	 *            Value in Kelvin that wants to be converted. Rounded up
+	 *            to 2 decimal places.
+	 * @return converted degree Réaumur value
+	 */
+	public double convertToRéaumur(double value) {
+		
+		double result;
+		
+		result = (value - 273.15) * 0.8;
+		
+		double roundResult = Math.round(result * 100.0) / 100.0;
+
+		return roundResult;
+	}
+	
+	/**
+	 * Convert a value in Kelvin to the equal value in degree
+	 * Rankine.
+	 * 
+	 * @param value
+	 *            Value in Kelvin that wants to be converted. Rounded up
+	 *            to 2 decimal places.
+	 * @return converted degree Rankine value
+	 */
+	public double convertToRankine(double value) {
+		
+		double result;
+		
+		result = value * 1.8;
+		
+		double roundResult = Math.round(result * 100.0) / 100.0;
+
+		return roundResult;
+	}
 
 	/**
 	 * Checks if the entered value is not lower than the absolute zero.

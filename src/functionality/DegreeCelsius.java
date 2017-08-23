@@ -48,4 +48,43 @@ public class DegreeCelsius {
 
 		return roundResult;
 	}
+	
+	/**
+	 * Convert a value in degree Celsius to the equal value in degree
+	 * Réaumur.
+	 * 
+	 * @param value
+	 *            Value in degree Celsius that wants to be converted. Rounded up
+	 *            to 2 decimal places.
+	 * @return converted degree Réaumur value
+	 */
+	public double convertToRéaumur(double value) {
+		
+		double result;
+		
+		result = value * 0.8;
+		
+		double roundResult = Math.round(result * 100.0) / 100.0;
+
+		return roundResult;
+	}
+	
+	/**
+	 * Convert a value in degree Celsius to the equal value in degree
+	 * Rankine.
+	 * 
+	 * @param value
+	 *            Value in degree Celsius that wants to be converted. Rounded up
+	 *            to 2 decimal places.
+	 * @return converted degree Rankine value
+	 */
+	public double convertToRankine(double value) {
+		
+		double result;
+		result = (value + 273.15) * 1.8;
+		
+		double roundResult = Math.round(result * 100.0) / 100.0;
+
+		return roundResult;
+	}
 }
