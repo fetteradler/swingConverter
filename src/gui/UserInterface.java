@@ -2,9 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,6 +29,7 @@ import functionality.DegreeFahrenheit;
 import functionality.DegreeRankine;
 import functionality.DegreeRéaumur;
 import functionality.Kelvin;
+import tools.JFreeChartThermometer;
 
 /**
  * Creates the Interface of the application. The GUI is implemented via Java
@@ -46,7 +49,7 @@ public class UserInterface extends JFrame implements ActionListener {
 	private JTextField entryValue, outValue1, outValue2, outValue3, outValue4;
 	private JMenuBar menuBar;
 	private JMenu navigateMenu, colorMenu, settingsMenu;
-	private JCheckBox advancedSettings;
+	private JCheckBox advancedSettings, showChartThermometer;
 	private JRadioButtonMenuItem colorItem1, colorItem2; // advancedSettings;
 	private ButtonGroup buttonGroup;
 	private GridBagConstraints gbc = new GridBagConstraints();
@@ -299,6 +302,29 @@ public class UserInterface extends JFrame implements ActionListener {
 					outUnit3.setVisible(false);
 					outValue4.setVisible(false);
 					outUnit4.setVisible(false);
+				}
+			}
+		});
+		
+		showChartThermometer = new JCheckBox("Thermometer");
+		settingsMenu.add(showChartThermometer);
+		
+		showChartThermometer.addActionListener(new java.awt.event.ActionListener() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				
+				if(showChartThermometer.isSelected()) {
+					JFreeChartThermometer panel = new JFreeChartThermometer();
+					JFrame frame = new JFrame();
+					frame.getContentPane().setLayout(new BorderLayout(5, 5));
+				    frame.setDefaultCloseOperation(3);
+				    frame.setTitle("Thermometer Test");
+				    frame.getContentPane().add(panel, BorderLayout.CENTER);
+				    frame.setSize(700, 400);
+				    final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+				    frame.setLocation((d.width - frame.getSize().width) / 2,
+				                      (d.height - frame.getSize().height) / 2);
+				    frame.setVisible(true);
 				}
 			}
 		});
